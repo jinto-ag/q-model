@@ -10,7 +10,7 @@
     "!**/*.tsbuildinfo"
   ],
   "nx": {
-    "sourceRoot": "libs/core/src",
+    "sourceRoot": "packages/core/src",
     "projectType": "library",
     "name": "core"
   },
