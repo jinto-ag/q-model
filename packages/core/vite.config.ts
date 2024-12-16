@@ -5,7 +5,7 @@ import dts from 'vite-plugin-dts';
 
 export default defineConfig({
   root: __dirname,
-  cacheDir: '../../node_modules/.vite/libs/core',
+  cacheDir: '../../node_modules/.vite/packages/core',
   plugins: [
     dts({
       entryRoot: 'src',
@@ -46,7 +46,7 @@ export default defineConfig({
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     reporters: ['default'],
     coverage: {
-      reportsDirectory: '../../coverage/libs/core',
+      reportsDirectory: '../../coverage/packages/core',
       provider: 'v8',
     },
   },

@@ -4,13 +4,13 @@
   "files": [],
   "references": [
     {
-      "path": "./libs/core"
+      "path": "./packages/core"
     },
     {
-      "path": "./libs/fields"
+      "path": "./packages/fields"
     },
     {
-      "path": "./libs/utils"
+      "path": "./packages/utils"
     }
   ]
 }

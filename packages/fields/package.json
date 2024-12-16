@@ -7,7 +7,7 @@
   "typings": "./dist/index.d.ts",
   "private": true,
   "nx": {
-    "sourceRoot": "libs/fields/src",
+    "sourceRoot": "packages/fields/src",
     "projectType": "library",
     "name": "fields"
   },

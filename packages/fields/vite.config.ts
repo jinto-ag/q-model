@@ -2,10 +2,11 @@
 import * as path from 'path';
 import { defineConfig, UserConfig } from 'vite';
 import dts from 'vite-plugin-dts';
+import 'vitest/config';
 
 export default defineConfig({
   root: __dirname,
-  cacheDir: '../../node_modules/.vite/libs/utils',
+  cacheDir: '../../node_modules/.vite/packages/fields',
   plugins: [
     dts({
       entryRoot: 'src',
@@ -28,7 +29,7 @@ export default defineConfig({
     lib: {
       // Could also be a dictionary or array of multiple entry points.
       entry: 'src/index.ts',
-      name: 'utils',
+      name: 'fields',
       fileName: 'index',
       // Change this to the formats you want to support.
       // Don't forget to update your package.json as well.
@@ -46,7 +47,7 @@ export default defineConfig({
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     reporters: ['default'],
     coverage: {
-      reportsDirectory: '../../coverage/libs/utils',
+      reportsDirectory: '../../coverage/packages/fields',
       provider: 'v8',
     },
   },
