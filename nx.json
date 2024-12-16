@@ -10,7 +10,10 @@
       "!{projectRoot}/.eslintrc.json",
       "!{projectRoot}/eslint.config.js"
     ],
-    "sharedGlobals": ["{workspaceRoot}/azure-pipelines.yml"]
+    "sharedGlobals": [
+      "{workspaceRoot}/azure-pipelines.yml",
+      "{workspaceRoot}/.github/workflows/ci.yml"
+    ]
   },
   "nxCloudId": "6759cc14020af9486ba0adbf",
   "plugins": [
