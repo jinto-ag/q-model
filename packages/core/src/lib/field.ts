@@ -102,6 +102,8 @@ export function ModelFieldFactory<
       name = fieldName || name;
 
       return {
+        // type
+        __type: ['ModelField'],
         // options
         ...updatedOptions,
         required: updatedOptions.required || true,
@@ -187,3 +189,16 @@ export const transformSchema = <
 
   return schema;
 };
+
+export function isValidField(field: any): field is ModelFieldDef {
+  if (!field || typeof field !== 'function') {
+    return false;
+  }
+
+  const validProps = ['name', 'setName', 'setModel', '__type'];
+
+  return (
+    validProps.every((prop) => Object.keys(field).includes(prop)) &&
+    field.__type.includes('ModelField')
+  );
+}

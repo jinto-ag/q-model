@@ -1,12 +1,16 @@
+import { isValidField } from './field';
+import { ModelManager } from './manager';
 import { DefaultModelRegistry, ModelRegistry } from './registry';
 import {
   ModelDef,
+  ModelFieldDef,
   ModelFields,
   ModelFieldsOptions,
   ModelInstance,
   ModelMeta,
   ModelRegistryOptions,
   ModelValues,
+  PartialModelValues,
 } from './types';
 
 export class BaseModel {}
@@ -36,6 +40,7 @@ export function ModelFactory<
     fields,
     meta,
     registry,
+    // objects will set after model definition
 
     //methods
     create: ({ fields, meta }) => {
@@ -75,6 +80,18 @@ export function ModelFactory<
         fields: omittedFields,
         meta: { ...meta, ...newMeta } as any,
       }) as any;
+    },
+
+    getField: (name) => {
+      return fields[name];
+    },
+
+    getFieldNames: () => {
+      return Object.keys(fields);
+    },
+
+    isValidField: (field): field is ModelFieldDef => {
+      return isValidField(field);
     },
 
     validate: async (values, options) => {
@@ -117,12 +134,22 @@ export function ModelFactory<
 
         return !Object.values(results).some((value) => value !== true);
       },
-    };
+      save: async (commit?: boolean): Promise<ModelInstance<Fields>> => {},
+      update: async (
+        values: PartialModelValues<Fields>,
+        commit?: boolean,
+      ): Promise<ModelInstance<Fields>> => {},
+      delete: async (commit?: boolean): Promise<void> => {},
+    } as unknown as ModelInstance<Fields>;
 
     return modelInstance;
   };
 
   Object.assign(modelDefFn, modelDef);
+
+  // assign model manager
+  const objects = new ModelManager<Fields>(modelDefFn as any);
+  Object.assign(modelDefFn, { objects });
 
   for (const name in fields) {
     const field = fields[name];

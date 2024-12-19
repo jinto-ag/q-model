@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { FilterOperator } from './filter';
 
 export enum Casing {
   SNAKE_CASE = 'snakeCase',
@@ -171,16 +172,18 @@ export interface IModelRegistry {
 /**
  * Model Manager
  */
-export interface IModelManager<
-  Fields extends ModelFields = any,
-  T extends { abstract?: boolean } = any,
-> {
-  model: ModelDef<Fields, T>;
+export enum ModelQueryMode {
+  CACHE = 'cache',
+  NO_CACHE = 'no_cache',
+}
+export interface IModelManager<Fields extends ModelFields = any> {
+  model: ModelDef<Fields, { abstract: false }>;
 
   //methods
-  all: () => Promise<ModelInstance<Fields>[]>;
+  all: (mode?: ModelQueryMode) => Promise<ModelInstance<Fields>[]>;
   filter: (
-    filters: { field: keyof Fields; operator: string; value: any }[],
+    filters: { field: keyof Fields; operator: FilterOperator; value: any }[],
+    mode?: ModelQueryMode,
   ) => Promise<ModelInstance<Fields>[]>;
   create: (
     value: Omit<ModelValues<Fields>, 'id'>,
@@ -235,7 +238,7 @@ export type ModelDef<
 > = {
   meta: Meta;
   fields: Fields;
-  objects: T['abstract'] extends false ? IModelManager<Fields, T> : never;
+  objects: T['abstract'] extends false ? IModelManager<Fields> : never;
   registry: IModelRegistry;
   events: IModelEvent;
 
@@ -284,7 +287,7 @@ export type ModelDef<
   //helper methods
   getField: <K extends string>(name: K) => Fields[K];
   getFieldNames: () => (keyof Fields)[];
-  isValidField: (field: ModelFieldDef) => boolean; // check the given field is valid in this model
+  isValidField: (field: any) => boolean; // check the given field is valid in this model
 } & (<F extends Fields>(
   values: ModelValues<F>,
   options?: Partial<ModelFieldsOptions<F>>,
